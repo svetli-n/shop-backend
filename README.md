@@ -25,4 +25,18 @@ To run the application execute:
 cargo run
 ```
 
-By default application will be available on `http://localhost:5000`. If you wish to change address or port you can do it inside `.env` file
+## Available routes
+
+```
+GET     /items -> list of all items
+POST    /item -> create new item, example: { "description": "actix rulez", "price": 3 }
+GET     /item/{id} -> show one item with requested id
+PUT     /item/{id} -> update item with requested id, example: { "description": "actix rulez", "price": 3 }
+DELETE  /item/{id} -> delete item with requested id
+```
+
+## Example requests 
+
+```
+curl -d '{ "description": "rust rulez", "price": 4 }' -H "Content-Type: application/json" -X POST http://localhost:5000/item
+```
