@@ -1,6 +1,6 @@
 # Shop backend
 
-Example Shop application using Actix-web and [SQLx](https://github.com/launchbadge/sqlx) with posgres
+Example Shop application using Actix-web and [SQLx](https://github.com/launchbadge/sqlx) with Postgres
 
 # Usage
 
