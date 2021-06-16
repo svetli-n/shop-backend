@@ -7,8 +7,8 @@ async fn find_all(db_pool: web::Data<PgPool>) -> impl Responder {
     let result = Item::find_all(db_pool.get_ref()).await;
     match result {
         Ok(items) => HttpResponse::Ok().json(items),
-        _ => HttpResponse::BadRequest()
-            .body("Error trying to read all items from database"),
+        Err(e) => HttpResponse::BadRequest()
+            .body(format!("Error trying to read all items from database: {}", e)),
     }
 }
 
