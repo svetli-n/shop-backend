@@ -8,6 +8,8 @@ use dotenv::dotenv;
 use listenfd::ListenFd;
 use sqlx::postgres::PgPool;
 use std::env;
+use meilisearch_sdk::client::Client;
+use meilisearch_sdk::indexes::Index;
 
 // import item module (routes and model)
 mod item;
@@ -16,13 +18,13 @@ mod item;
 async fn index() -> impl Responder {
     HttpResponse::Ok().body(r#"
         Available routes:
-        GET /items -> list of all items
-        POST /item -> create new item, example: { "description": "learn actix and sqlx", "done": false }
-        GET /item/{id} -> show one item with requested id
-        PUT /item/{id} -> update item with requested id, example: { "description": "learn actix and sqlx", "done": true }
-        DELETE /item/{id} -> delete item with requested id
+        GET /search/{query} -> get items for query
     "#
     )
+}
+
+struct MyIndex<'a> {
+    index: Index<'a>,
 }
 
 #[actix_web::main]
@@ -33,17 +35,15 @@ async fn main() -> Result<()> {
     // this will enable us to keep application running during recompile: systemfd --no-pid -s http::5000 -- cargo watch -x run
     let mut listenfd = ListenFd::from_env();
 
-    let database_url =
-        env::var("DATABASE_URL").expect("DATABASE_URL is not set in .env file");
-    let db_pool = PgPool::new(&database_url).await?;
-
-
+    // let database_url =
+    //     env::var("DATABASE_URL").expect("DATABASE_URL is not set in .env file");
+    // let db_pool = PgPool::new(&database_url).await?;
 
     let mut server = HttpServer::new(move || {
         let cors = Cors::permissive();
         App::new()
             .wrap(cors)
-            .data(db_pool.clone()) // pass database pool to application so we can access it inside handlers
+            // .data(db_pool) // pass database pool to application so we can access it inside handlers
             .route("/", web::get().to(index))
             .configure(item::init) // init item routes
     });
