@@ -1,23 +1,9 @@
 # Shop backend
 
-Example Shop application using Actix-web and [SQLx](https://github.com/launchbadge/sqlx) with Postgres
+Shop API using [Actix-web](https://github.com/actix/actix-web) 
+with [MeiliSearch](https://www.meilisearch.com/).
 
-# Usage
-
-## Change into the project directory
-
-All instructions assume you have changed into this folder:
-
-```bash
-cd shop-backend 
-```
-
-## Set up the database
-
-* Create new database using `schema.sql`
-* Adjust DATABASE_URL to match your Postgres address, username and password 
-
-## Run the application
+## Usage
 
 To run the application execute:
 
@@ -25,18 +11,14 @@ To run the application execute:
 cargo run
 ```
 
-## Available routes
+Available routes
 
 ```
-GET     /items -> list of all items
-POST    /item -> create new item, example: { "description": "actix rulez", "price": 3 }
-GET     /item/{id} -> show one item with requested id
-PUT     /item/{id} -> update item with requested id, example: { "description": "actix rulez", "price": 3 }
-DELETE  /item/{id} -> delete item with requested id
+GET /search/{query} -> get all items for query
 ```
 
-## Example requests 
+Example request 
 
 ```
-curl -d '{ "description": "rust rulez", "price": 4 }' -H "Content-Type: application/json" -X POST http://localhost:5000/item
+curl http://localhost:5000/search/in
 ```
